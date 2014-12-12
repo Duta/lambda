@@ -26,5 +26,5 @@ id Γ τ = lam (var one)
 k : ∀ Γ τ₁ τ₂ → λ-program Γ (τ₁ λ→ τ₂ λ→ τ₁)
 k Γ τ₁ τ₂ = lam (lam (var (succ one)))
 
-s : ∀ Γ τ₁ τ₂ τ₃ → λ-program Γ ((τ₁ λ→ τ₂ λ→ τ₃) λ→ (τ₁ λ→ τ₂) λ→ τ₁ λ→ τ₃)
-s Γ τ₁ τ₂ τ₃ = {!!}
+s : ∀ Γ τ₁ τ₂ τ₃ → λ-program Γ ((τ₃ λ→ τ₂ λ→ τ₁) λ→ (τ₃ λ→ τ₂) λ→ τ₃ λ→ τ₁)
+s Γ τ₁ τ₂ τ₃ = lam (lam (lam (app (app (var (succ (succ one))) (var one)) (app (var (succ one)) (var one)))))
