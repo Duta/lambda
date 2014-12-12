@@ -25,3 +25,4 @@ data λ-program : λ-context → λ-type → Set where
   var : ∀ {Γ τ    } → τ ∈ Γ                                   → λ-program Γ τ
   lam : ∀ {Γ τ₁ τ₂} → λ-program (τ₁ ∷ Γ) τ₂                   → λ-program Γ (τ₁ λ→ τ₂)
   _$_ : ∀ {Γ τ₁ τ₂} → λ-program Γ (τ₁ λ→ τ₂) → λ-program Γ τ₁ → λ-program Γ τ₂
+infixl 0 _$_
