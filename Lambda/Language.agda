@@ -1,17 +1,20 @@
 module Lambda.Language where
 
+open import Data.List
 open import Data.Nat
 
-data λ-kind : Set where
-  ground : λ-kind
-  function : λ-kind
+data λ-type : Set where
+  λℕ   : λ-type
+  _λ→_ : λ-type → λ-type → λ-type
 
-data λ-type : λ-kind → Set where
-  λℕ : λ-type ground
-  _λ→_ : ∀ {k₁ k₂} → λ-type k₁ → λ-type k₂ → λ-type function
+λ-context = List λ-type
 
-λ→agda : λ-type ground → Set
-λ→agda λℕ = ℕ
+data _∈_ (t : λ-type) : λ-context → Set where
+  ∈-zero : ∀ {ts} → t ∈ (t ∷ ts)
+  ∈-suc  : ∀ {ts t'} → t ∈ ts → t ∈ (t' ∷ ts)
 
-data λ-program : Set where
-  lit : ∀ {t} → λ→agda t → λ-program
+data λ-program : λ-context → λ-type → Set where
+  lit : ∀ Γ → ℕ → λ-program Γ λℕ
+  var : ∀ Γ τ → τ ∈ Γ → λ-program Γ τ
+  lam : ∀ Γ τ₁ τ₂ → λ-program (τ₁ ∷ Γ) τ₂ → λ-program Γ (τ₁ λ→ τ₂)
+  app : ∀ Γ τ₁ τ₂ → λ-program Γ (τ₁ λ→ τ₂) → λ-program Γ τ₁ → λ-program Γ τ₂
